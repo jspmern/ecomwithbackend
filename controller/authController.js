@@ -8,19 +8,19 @@ export let registorController = async (req, res) => {
 
     //validation
     if (!name) {
-      return res.send({ error: "Name is require" });
+      return res.send({ message: "Name is require" });
     }
     if (!email) {
-      return res.send({ error: "email is require" });
+      return res.send({ message: "email is require" });
     }
     if (!phone) {
-      return res.send({ error: "phone no is require" });
+      return res.send({ message: "phone no is require" });
     }
     if (!password) {
-      return res.send({ error: "password is require" });
+      return res.send({ emessage: "password is require" });
     }
     if (!address) {
-      return res.send({ error: "Address is require" });
+      return res.send({ message: "Address is require" });
     }
 
     //check user
