@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    answer:{
+      type:String,
+      require:true
+    },
     profilePicture: {
       type: String,
     },
