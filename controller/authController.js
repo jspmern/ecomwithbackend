@@ -1,5 +1,6 @@
 import { camparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../model/userModel.js";
+import orderModel from '../model/orderModel.js'
 import jwt from "jsonwebtoken";
 
 //this is for the registration
@@ -163,3 +164,69 @@ export let forgetPasswordController = async (req, res) => {
 export let adminAuthController = (req, res) => {
   res.send({ ok: true });
 };
+
+//this is for update user profile
+export let updateUserProfileController = async (req, res) => {
+  try {
+    let { name, email, address, password, phone } = req.body;
+    let { _id } = req.user;
+    let findUser = await userModel.findById({ _id });
+    if (!password && password.length < 6) {
+      return  res.json({ error: "Password is required and more then 6 digit" });
+    }
+    const hashedPassword = password? await hashPassword(password):undefined;
+    let updateUser = await userModel.findByIdAndUpdate(
+      req.user._id,
+      {
+        name: name || findUser.name,
+        password: hashedPassword || findUser.password,
+        phone: phone || user.phone,
+        address: address || user.address,
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).send({
+      message: "User is Updated successfully",
+      success: true,
+      updateUser: updateUser,
+    });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .send({ message: "Somthing wrong while updating", success: true, err });
+  }
+};
+
+//this is for the get-order details of specific user
+export let getOrderController=async(req,res)=>{
+  console.log('hello')
+  try{
+     let {_id}=req.user
+     console.log(_id)
+     let order = await  orderModel.find({buyer:_id}).populate('products').populate('buyer',"name")
+     res.send(order)
+  }
+  catch{
+       console.log(err)
+       res.status(500).send({success:false,message:"Somthing wrong while fetching",err})
+  }
+}
+
+//this is for the all-order for admin who can manage order
+export let getAllOrderController=async (req,res)=>{
+   try{
+        let orders=await orderModel.find({}).populate("products")
+        .populate("buyer", "name")
+        .sort({ createdAt: "-1" });
+         res.status(200).send({message:"All Order",success:true,orders})
+
+   }
+   catch(err)
+   {
+    console.log(err)
+    res.status(500).send({message:"Somthing Wrong, While Fetching",success:false,err})
+   }
+}
