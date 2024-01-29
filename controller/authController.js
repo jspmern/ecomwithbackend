@@ -220,7 +220,7 @@ export let getAllOrderController=async (req,res)=>{
    try{
         let orders=await orderModel.find({}).populate("products")
         .populate("buyer", "name")
-        .sort({ createdAt: "-1" });
+       
          res.status(200).send({message:"All Order",success:true,orders})
 
    }
@@ -230,3 +230,25 @@ export let getAllOrderController=async (req,res)=>{
     res.status(500).send({message:"Somthing Wrong, While Fetching",success:false,err})
    }
 }
+
+
+//this is for the change the order status
+export const orderStatusController = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    const orders = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error While Updateing Order",
+      error,
+    });
+  }
+};
