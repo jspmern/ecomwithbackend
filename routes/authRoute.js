@@ -12,12 +12,14 @@ import {
   getOrderController,
   getAllOrderController,
   orderStatusController,
+  allUserController,
+  changeRoleController,
 } from "../controller/authController.js";
 import { isAdmin, requireSignIn } from "../middlware/authMiddlware.js";
 
 //routing
 
-//REGISTER || METHOD POST
+//REGISTER || METHOD POST 
 router.post("/register", registorController);
 
 //LOGIN || POST
@@ -47,4 +49,9 @@ router.put(
   isAdmin,
   orderStatusController
 );
+
+//ALl-User  || get 
+router.get('/all-user',requireSignIn,isAdmin,allUserController)
+//change role || put
+router.put('/change-role',requireSignIn,isAdmin,changeRoleController)
 export default router;

@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoute from "./routes/authRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import productRoute from "./routes/productRoute.js";
+import otpRoute from "./routes/otpRoute.js";
 import  path from 'path'
 let app = express();
 //configure env
@@ -24,6 +25,8 @@ app.use("/api/v1/auth", authRoute);
 app.use('/api/v1/category',categoryRoute)
 //product route
 app.use('/api/v1/product',productRoute)
+//otp
+app.use('/api/v1',otpRoute)
 app.listen(8080, () => {
   console.log(`server run at http://localhost:${process.env.PORT}/`);
 });

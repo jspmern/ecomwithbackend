@@ -252,3 +252,30 @@ export const orderStatusController = async (req, res) => {
     });
   }
 };
+//this is for the all user controller
+export let allUserController=async(req,res)=>{
+  try{
+        let users=await userModel.find({}).select("-answer -password")
+        res.status(200).send({message:"All User",users,total_count:users.length})
+  }
+  catch(err)
+  {
+    console.log(err)
+    res.status(500).send({message:"somthing wrong while fetching the data",err,success:false})
+  }
+
+}
+//this is change role for user
+export let changeRoleController= async(req,res)=>{
+  try{
+    let {id,role}=req.body
+    let findData= await userModel.findByIdAndUpdate({_id:id},{role:role},{new:true})
+    res.status(200).send({message:"Sucessfully Role Change",success:true})
+  }
+  catch(err)
+  {
+    console.log(err)
+    res.status(500).send({message:"somthing wrong while fetching",err,success:false})
+  }
+
+}

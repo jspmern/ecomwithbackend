@@ -34,7 +34,8 @@ export let createProductController = async (req, res) => {
     if (!category) {
       res.send({ message: "Category field is require" });
     }
-    let images = await uploadImageOnCloudinary(req.files);
+    let images = 
+    await uploadImageOnCloudinary(req.files);
     let productData = new productModel({
       name,
       quantity,
@@ -191,7 +192,6 @@ export let productFilterController = async (req, res) => {
     let args = {};
     if (checked.length > 0) args.category = checked;
     if (prices.length) args.price = { $gte: prices[0], $lte: prices[1] };
-    console.log("argsis", args);
     const products = await productModel.find(args);
     res.status(200).send({
       success: true,
